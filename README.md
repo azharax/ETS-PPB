@@ -1,5 +1,9 @@
 ﻿# To-Do Planner
 
+<p align="center">
+  <img src="app/src/main/res/drawable/task_planner_logo.png" alt="To-Do Planner Logo" width="250" style="background-color: white; padding: 60px 25%; border-radius: 12px;">
+</p>
+
 **To-Do Planner** adalah aplikasi pengelola tugas dan jadwal harian bergaya modern yang dirancang untuk mempermudah produktivitas Anda. Dibangun sepenuhnya menggunakan teknologi modern Android (**Jetpack Compose**), aplikasi ini menawarkan pengalaman navigasi dan interaksi antarmuka yang sangat responsif, mulus, dan intuitif.
 
 ## Fitur Utama
