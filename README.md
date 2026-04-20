@@ -58,4 +58,11 @@ Dibuat dengan mematuhi pattern asitektur masa kini, yakni **MVVM (Model-View-Vie
 - Hapus tugas dengan swipe, lalu bisa dibatalkan lewat undo.
 - Tampilan modern, ringan, dan nyaman dipakai.
 
-
+### v1.1.0 (Rilis Publik)
+- Perbaikan tampilan pop up "Tambah Tugas"
+- Perbaikan tampilan pop up "Edit Tugas"
+- Penambahan fitur Hapus Tugas pada pop up "Edit Tugas"
+- Perbaikan tampilan tombol pilihan hari khusus pada Tugas
+- Penambahan fitur penanda (Flag) pada Tugas
+- Perbaikan tampilan kalender
+- Penambahan fitur tombol navigasi Bulan, Tahun, dan Hari ini pada kalender
