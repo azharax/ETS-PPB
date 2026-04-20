@@ -29,9 +29,7 @@
 ## 📱 Screenshot Terkini
 | Daftar Tugas (Tasks) | Kalender Terintegrasi (Calendar) |
 | :---: | :---: |
-| <img src="https://via.placeholder.com/250x500.png?text=Ganti+SS+Task+Screen" width="250"> | <img src="https://via.placeholder.com/250x500.png?text=Ganti+SS+Calendar+Screen" width="250"> |
-
-*(Catatan: Jangan lupa ganti URL Placeholder di atas dengan link gambar SS ssets/screenshot-home.png di branch Anda)*
+| <img src="assets/img-tasks.jpg" width="250"> | <img src="assets/img-kalender.jpg" width="250"> |
 
 ## 📥 Download APK
 Anda dapat melihat semua versi aplikasi yang pernah dirilis melalui halaman **GitHub Releases**. Di sini, Anda juga bisa mengunduh versi terbaru aplikasi dengan mudah.
