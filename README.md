@@ -50,15 +50,7 @@ Dibuat dengan mematuhi pattern asitektur masa kini, yakni **MVVM (Model-View-Vie
 - **Lapisan Penyimpanan:** Room Database SQLite (Local Storage)
 
 ## 📝 Changelog / Catatan Rilis
-### v1.0.0 (Rilis Publik)
-- Daftar tugas otomatis dikelompokkan berdasarkan waktu: lewat waktu, hari ini, besok, lusa, dan tanpa tenggat.
-- Kalender interaktif dengan penanda tugas pada tanggal tertentu.
-- Dukungan tugas berulang harian, mingguan, bulanan, atau hari tertentu.
-- Bisa edit tugas kapan saja.
-- Hapus tugas dengan swipe, lalu bisa dibatalkan lewat undo.
-- Tampilan modern, ringan, dan nyaman dipakai.
-
-### v1.1.0 (Rilis Publik)
+### v1.1.0 (Latest)
 - Perbaikan tampilan pop up "Tambah Tugas"
 - Perbaikan tampilan pop up "Edit Tugas"
 - Penambahan fitur Hapus Tugas pada pop up "Edit Tugas"
@@ -66,3 +58,12 @@ Dibuat dengan mematuhi pattern asitektur masa kini, yakni **MVVM (Model-View-Vie
 - Penambahan fitur penanda (Flag) pada Tugas
 - Perbaikan tampilan kalender
 - Penambahan fitur tombol navigasi Bulan, Tahun, dan Hari ini pada kalender
+
+### v1.0.0 (Initial Release)
+- Daftar tugas otomatis dikelompokkan berdasarkan waktu: lewat waktu, hari ini, besok, lusa, dan tanpa tenggat.
+- Kalender interaktif dengan penanda tugas pada tanggal tertentu.
+- Dukungan tugas berulang harian, mingguan, bulanan, atau hari tertentu.
+- Bisa edit tugas kapan saja.
+- Hapus tugas dengan swipe, lalu bisa dibatalkan lewat undo.
+- Tampilan modern, ringan, dan nyaman dipakai.
+
