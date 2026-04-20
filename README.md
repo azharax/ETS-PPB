@@ -18,7 +18,7 @@
 ## ✨ Fitur Utama
 - **Navigasi Cepat Berbasis Swipe:** Transisi mulus antara layar **Daftar Tugas** dan **Kalender** menggunakan HorizontalPager yang intuitif.
 - **Daftar Tugas Cerdas:** Memisahkan tugas secara otomatis (*Lewat Waktu, Hari Ini, Besok, Lusa, Tanpa Tenggat*).
-- **Kalender Interaktif:** Kalender visual bulanan interaktif dengan titik penanda sebagai representatif hari-hari yang memiliki daftar tugas.
+- **Kalender Interaktif:** Kalender visual bulanan interaktif dengan titik penanda sebagai representatif hari-hari yang sudah memiliki daftar tugas.
 - **Manajemen Penjadwalan Lanjut:** Dilengkapi opsi penentuan opsi tanggal dan jam, termasuk **Tugas Berulang** (Harian, Mingguan, Bulanan, hingga Kustom hari spesifik) dengan pengaturan batas tamat fitur berulang yang luar biasa fleksibel.
 - **Interaksi Material Design 3:** Menghapus tugas lebih instan dengan di-*swipe*, mendukung notifikasi balikan pembatalan (*Undo* Snackbar).
 - **Estetika Antarmuka Penuh:** Animasi *Splash Screen* logo di awal pembukaan, resolusi UI kartu/papan daftar yang hemat *spaces* dan ramah memori otak.
