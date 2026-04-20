@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/src/main/res/drawable/task_planner_logo.png" alt="To-Do Planner Logo" width="250" style="background-color: white; padding: 60px 25%; border-radius: 12px;">
+  <img name="download-badge" src="app/src/main/res/drawable/task_planner_logo.png" alt="To-Do Planner Logo" width="250" style="background-color: white; padding: 60px 25%; border-radius: 12px;">
 </p>
 
 <h1 align="center">To-Do Planner</h1>
@@ -8,7 +8,7 @@
   <a href="https://github.com/azharax/ETS-PPB/releases/latest">
     <img src="https://img.shields.io/github/v/tag/azharax/ETS-PPB?color=brightgreen&label=version&style=for-the-badge" alt="Latest Version">
   </a>
-  <a name="download-badge" href="https://github.com/azharax/ETS-PPB/releases/latest/download/todoplanner_v1.0.0.apk">
+  <a href="https://github.com/azharax/ETS-PPB/releases/latest/download/todoplanner_v1.0.0.apk">
     <img src="https://img.shields.io/badge/download_apk-blue?style=for-the-badge&logo=android" alt="Download APK">
   </a>
 </p>
