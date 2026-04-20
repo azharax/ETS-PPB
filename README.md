@@ -23,9 +23,9 @@
 - **Estetika Antarmuka Penuh:** Animasi *Splash Screen* logo di awal pembukaan, resolusi UI kartu/papan daftar yang hemat *spaces* dan ramah memori otak.
 
 ## 📱 Screenshot Terkini
-| Daftar Tugas (Tasks) | Kalender Terintegrasi (Calendar) |
-| :---: | :---: |
-| <img src="assets/img-tasks.jpg" width="250"> | <img src="assets/img-kalender.jpg" width="250"> |
+| Daftar Tugas (Tasks) | Menambah Tugas | Kalender Terintegrasi (Calendar) |
+| :---: | :---: | :---: |
+| <img src="assets/img-tasks.png" width="250"> | <img src="assets/img-addtask.png" width="250"> | <img src="assets/img-kalender.png" width="250"> |
 
 ## 📥 Download APK
 Anda dapat melihat semua versi aplikasi yang pernah dirilis melalui halaman **GitHub Releases**. Di sini, Anda juga bisa mengunduh versi terbaru aplikasi dengan mudah.
