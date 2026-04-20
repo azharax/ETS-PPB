@@ -5,16 +5,22 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +28,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -44,12 +51,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.PaddingValues
 import com.example.todolist.R
 import com.example.todolist.domain.model.RepeatMode
 import com.example.todolist.domain.model.Task
@@ -90,7 +102,11 @@ fun AddTaskDialog(
     var repeatCountText by remember { mutableStateOf("") }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
+    val horizontalScrollState = remember { ScrollState(0) }
+
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val locale = Locale.forLanguageTag("id-ID")
     val addTitleLabel = if (initialTask == null) "Tugas Baru" else "Edit Tugas"
     val saveLabel = stringResource(id = R.string.simpan)
@@ -119,6 +135,18 @@ fun AddTaskDialog(
         )
     }
 
+    val daysOfWeekIndonesian = remember {
+        mapOf(
+            "Sun" to "Minggu",
+            "Mon" to "Senin",
+            "Tue" to "Selasa",
+            "Wed" to "Rabu",
+            "Thu" to "Kamis",
+            "Fri" to "Jumat",
+            "Sat" to "Sabtu"
+        )
+    }
+
     LaunchedEffect(selectedDateMillis, repeatMode) {
         if (repeatMode == com.example.todolist.domain.model.RepeatMode.CUSTOM_DAYS && selectedDateMillis != null) {
             val cal = Calendar.getInstance().apply { timeInMillis = selectedDateMillis!! }
@@ -127,6 +155,12 @@ fun AddTaskDialog(
                 customDays = customDays + dayStr
             }
         }
+    }
+
+    // Helper function to close keyboard
+    val closeKeyboard = {
+        keyboardController?.hide()
+        focusManager.clearFocus()
     }
 
     // Delete confirmation dialog
@@ -225,7 +259,13 @@ fun AddTaskDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .clickable(
+                        enabled = true,
+                        onClick = { closeKeyboard() },
+                        interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                        indication = null
+                    ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Section 1: Task Title
@@ -258,25 +298,7 @@ fun AddTaskDialog(
                     }
                 }
 
-                // Section 2: Category (Placeholder)
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TaskSectionHeader(icon = "📁", title = "Pilih Kategori")
-                    OutlinedTextField(
-                        value = "General",
-                        onValueChange = { },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(10.dp),
-                        enabled = false,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            disabledBorderColor = MaterialTheme.colorScheme.outline,
-                            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                        ),
-                        textStyle = MaterialTheme.typography.bodyMedium
-                    )
-                }
-
-                // Section 3: Deadline
+                // Section 2: Deadline
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     TaskSectionHeader(icon = "📅", title = "Kapan Anda ingin menyelesaikannya?")
                     Row(
@@ -291,6 +313,7 @@ fun AddTaskDialog(
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(MaterialTheme.colorScheme.surface)
                                 .clickable {
+                                    closeKeyboard()
                                     val calendar = Calendar.getInstance()
                                     selectedDateMillis?.let { calendar.timeInMillis = it }
                                     DatePickerDialog(
@@ -332,6 +355,7 @@ fun AddTaskDialog(
                                     else MaterialTheme.colorScheme.surfaceVariant
                                 )
                                 .clickable(enabled = selectedDateMillis != null) {
+                                    closeKeyboard()
                                     val now = Calendar.getInstance()
                                     TimePickerDialog(
                                         context,
@@ -361,6 +385,7 @@ fun AddTaskDialog(
                         // Clear deadline button (X icon)
                         androidx.compose.material3.IconButton(
                             onClick = {
+                                closeKeyboard()
                                 selectedDateMillis = null
                                 selectedHourMinute = null
                             },
@@ -393,7 +418,7 @@ fun AddTaskDialog(
                     )
                 }
 
-                // Section 4: Repeat Pattern (only if deadline is set)
+                // Section 3: Repeat Pattern (only if deadline is set)
                 if (selectedDateMillis != null && initialTask == null) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         TaskSectionHeader(icon = "🔁", title = "Pola Pengulangan")
@@ -402,7 +427,10 @@ fun AddTaskDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .clickable { repeatDropdownExpanded = true }
+                                .clickable { 
+                                    closeKeyboard()
+                                    repeatDropdownExpanded = true 
+                                }
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
                                 .border(
                                     width = 1.dp,
@@ -470,21 +498,29 @@ fun AddTaskDialog(
                             // Custom days selector
                             if (repeatMode == com.example.todolist.domain.model.RepeatMode.CUSTOM_DAYS) {
                                 val daysOfWeek = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-                                val dayInitials = listOf("M", "T", "W", "T", "F", "S", "S")
-                                Row(
+                                val daysInitials = listOf("S", "S", "R", "K", "J", "S", "M")
+                                Column(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    daysOfWeek.forEachIndexed { index, day ->
-                                        val isSelected = customDays.contains(day)
-                                        Box(
-                                            modifier = Modifier
-                                                .size(38.dp)
-                                                .background(
-                                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                                                    shape = CircleShape
-                                                )
-                                                .clickable {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 8.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        daysOfWeek.forEachIndexed { index, day ->
+                                            val dayInitial = daysInitials[index]
+                                            val isSelected = customDays.contains(day)
+                                            val isSunday = (day == "Sun")
+                                            DaySelectionCircleButton(
+                                                dayInitial = dayInitial,
+                                                isSelected = isSelected,
+                                                isSunday = isSunday,
+                                                modifier = Modifier.weight(1f),
+                                                onToggle = {
+                                                    closeKeyboard()
                                                     if (isSelected) {
                                                         val newCustomDays = customDays - day
                                                         customDays = newCustomDays
@@ -508,18 +544,6 @@ fun AddTaskDialog(
                                                         customDays = customDays + day
                                                     }
                                                 }
-                                                .border(
-                                                    width = if (isSelected) 0.dp else 1.dp,
-                                                    color = MaterialTheme.colorScheme.outline,
-                                                    shape = CircleShape
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = dayInitials[index],
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }
                                     }
@@ -534,7 +558,7 @@ fun AddTaskDialog(
                     }
                 }
 
-                // Section 5: Add Notes
+                // Section 4: Add Notes
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     TaskSectionHeader(icon = "📝", title = "Tambah Catatan (Opsional)")
                     OutlinedTextField(
@@ -651,6 +675,94 @@ private fun TaskSectionHeader(icon: String, title: String) {
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
+private fun DaySelectionCircleButton(
+    dayInitial: String,
+    isSelected: Boolean,
+    isSunday: Boolean,
+    modifier: Modifier = Modifier,
+    onToggle: () -> Unit
+) {
+    val buttonSize = 38.dp
+    
+    // Text color: white when selected, dark when unselected
+    val textColor = when {
+        isSelected -> Color.White
+        isSunday -> Color(0xFF8B0000)  // Dark maroon for visibility
+        else -> MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)  // Dark primary
+    }
+    
+    // Background color: soft/muda using primary and maroon colors
+    val backgroundColor = if (isSelected) {
+        if (isSunday) Color(0xFFC41C3B) else MaterialTheme.colorScheme.primary  // Maroon and primary when selected
+    } else {
+        if (isSunday) Color(0xFFFCE4EC) else MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)  // Very light maroon and primary when unselected
+    }
+    
+    // Border color: softer shades matching the theme
+    val borderColor = if (isSunday) Color(0xFFE91E63) else MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+
+    Box(
+        modifier = modifier
+            .aspectRatio(1f)
+            .heightIn(max = buttonSize)
+            .background(
+                color = backgroundColor,
+                shape = CircleShape
+            )
+            .border(
+                width = 1.2.dp,
+                color = borderColor,
+                shape = CircleShape
+            )
+            .clickable(onClick = onToggle),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = dayInitial,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = textColor,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun DaySelectionButton(
+    day: String,
+    dayDisplay: String,
+    isSelected: Boolean,
+    modifier: Modifier = Modifier,
+    onToggle: () -> Unit
+) {
+    OutlinedButton(
+        onClick = onToggle,
+        modifier = modifier
+            .height(40.dp)
+            .fillMaxWidth(),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+            contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        ),
+        border = BorderStroke(
+            width = 1.5.dp,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+        ),
+        shape = RoundedCornerShape(8.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+    ) {
+        Text(
+            text = dayDisplay,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 2,
+            textAlign = TextAlign.Center,
+            lineHeight = 13.sp
         )
     }
 }
