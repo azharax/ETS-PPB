@@ -370,7 +370,7 @@ fun AddTaskDialog(
             }
         },
         dismissButton = {
-            androidx.compose.material3.TextButton(onClick = onDismiss) {
+            androidx.compose.materialadd3.TextButton(onClick = onDismiss) {
                 Text(text = cancelLabel)
             }
         }
