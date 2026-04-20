@@ -4,28 +4,15 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -38,17 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.PaddingValues
 import com.example.todolist.R
 import com.example.todolist.domain.model.Task
 import java.text.SimpleDateFormat
@@ -86,11 +66,7 @@ fun AddTaskDialog(
     var repeatDropdownExpanded by remember { mutableStateOf(false) }
     var repeatCountText by remember { mutableStateOf("") }
 
-    val horizontalScrollState = remember { ScrollState(0) }
-
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
     val locale = Locale.forLanguageTag("id-ID")
     val addTitleLabel = if (initialTask == null) stringResource(id = R.string.dialog_tambah_tugas) else "Edit Tugas"
     val titleLabel = stringResource(id = R.string.judul)
@@ -124,18 +100,6 @@ fun AddTaskDialog(
             Calendar.THURSDAY to "Thu",
             Calendar.FRIDAY to "Fri",
             Calendar.SATURDAY to "Sat"
-        )
-    }
-
-    val daysOfWeekIndonesian = remember {
-        mapOf(
-            "Sun" to "Minggu",
-            "Mon" to "Senin",
-            "Tue" to "Selasa",
-            "Wed" to "Rabu",
-            "Thu" to "Kamis",
-            "Fri" to "Jumat",
-            "Sat" to "Sabtu"
         )
     }
 

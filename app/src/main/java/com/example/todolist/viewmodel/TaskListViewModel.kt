@@ -83,8 +83,7 @@ class TaskListViewModel(
                     deadlineMillis = deadlineMillis,
                     deadlineHasTime = deadlineHasTime,
                     repeatMode = repeatMode,
-                    repeatDays = repeatDays,
-                    groupId = null
+                    repeatDays = repeatDays
                 )
                 return@launch
             }
